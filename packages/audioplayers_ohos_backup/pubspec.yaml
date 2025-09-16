@@ -1,0 +1,29 @@
+name: audioplayers_ohos
+description: OHOS implementation of the audioplayers plugin.
+version: 1.0.0
+homepage: https://github.com/bluefireteam/audioplayers/tree/main/packages/audioplayers_ohos
+repository: https://github.com/bluefireteam/audioplayers
+issue_tracker: https://github.com/bluefireteam/audioplayers/issues
+
+environment:
+  sdk: ^3.4.0
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayers_platform_interface:
+    path: ../audioplayers_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  lints: ^4.0.0
+
+flutter:
+  plugin:
+    implements: audioplayers
+    platforms:
+      ohos:
+        pluginClass: OHOSAudioPlayer
+        package: com.example.audioplayers_ohos

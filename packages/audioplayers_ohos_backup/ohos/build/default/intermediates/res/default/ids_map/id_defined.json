@@ -1,0 +1,11 @@
+{
+	"record":	[{
+			"type":	"string",
+			"name":	"internet_permission_reason",
+			"id":	"0x01000000"
+		}, {
+			"type":	"string",
+			"name":	"read_media_permission_reason",
+			"id":	"0x01000001"
+		}]
+}

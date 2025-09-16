@@ -1,22 +1,26 @@
 name: audioplayers_example
-resolution: workspace
 description: Demonstrates how to use the audioplayers plugin.
 publish_to: none
 
 dependencies:
-  audioplayers: ^6.5.1
-  collection: ^1.16.0
-  file_picker: ^8.0.3
+  audioplayers:
+    path: ../
+  collection: ^1.18.0
+  file_picker: ^10.3.3
   flutter:
     sdk: flutter
-  http: ^1.0.0
-  path_provider: ^2.0.12
-  provider: ^6.0.5
+  http: ^1.5.0
+  path_provider:
+    git:
+      url: "https://gitcode.com/openharmony-tpc/flutter_packages.git"
+      path: "packages/shared_preferences/path_provider"
+  provider: ^6.1.5+1
 
 dev_dependencies:
   # Integration tests for audioplayers_platform_interface are handled 
   # in this package to avoid maintaining multiple example apps:
-  audioplayers_platform_interface: ^7.1.1
+  audioplayers_platform_interface:
+    path: ../../audioplayers_platform_interface
   flame_lint: ^1.4.1
   flutter_test:
     sdk: flutter
@@ -30,5 +34,5 @@ flutter:
     - assets/
 
 environment:
-  sdk: ^3.6.0
-  flutter: '>=3.27.0'
+  sdk: ^3.4.0
+  flutter: ">=3.22.0"

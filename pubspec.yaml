@@ -13,7 +13,7 @@ workspace:
   - packages/audioplayers_windows
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.4.0
 
 dev_dependencies:
   melos: ^7.0.0-dev.8
@@ -22,10 +22,10 @@ melos:
   command:
     bootstrap:
       environment:
-        sdk: ^3.6.0
-        flutter: '>=3.27.0'
+        sdk: ^3.4.0
+        flutter: '>=3.22.0'
       dev_dependencies:
-        flame_lint: ^1.4.1
+        flame_lint: ^1.4.2
 
   scripts:
     pub-outdated:

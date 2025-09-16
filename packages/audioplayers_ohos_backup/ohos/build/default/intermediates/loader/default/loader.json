@@ -1,0 +1,32 @@
+{
+  "modulePathMap": {
+    "entry": "/Users/zxnap/testflutter/ohos/entry",
+    "stockfish_chess_engine": "/Users/zxnap/.pub-cache/git/StockfishChessEngineFlutter-d8b7f46376f01af3ae52f59b32911aaf05d4936e/ohos",
+    "fluttertoast": "/Users/zxnap/.pub-cache/git/flutter_fluttertoast-5a752a422345c9223b60dd5e6a0c941ca03fdcbd/ohos",
+    "shared_preferences_ohos": "/Users/zxnap/.pub-cache/git/flutter_packages-6bab8b570e33707c0bf0f4f513009327593dca74/packages/shared_preferences/shared_preferences_ohos/ohos",
+    "audioplayers_ohos": "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos/ohos"
+  },
+  "compileMode": "esmodule",
+  "projectRootPath": "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos",
+  "nodeModulesPath": "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos/ohos/build/default/intermediates/loader_out/default/node_modules",
+  "byteCodeHarInfo": {},
+  "declarationEntry": [],
+  "moduleName": "audioplayers_ohos",
+  "hspNameOhmMap": {},
+  "harNameOhmMap": {
+    "@ohos/flutter_ohos": "@normalized:N&&&@ohos/flutter_ohos/index&1.0.0-2317265cd5"
+  },
+  "packageManagerType": "ohpm",
+  "compileEntry": [
+    "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos/ohos/src/main/ets/index.ets",
+    "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos/ohos/src/main/ets/com/example/audioplayers_ohos/AudioplayersOhosPlugin.ts",
+    "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos/ohos/src/main/ets/com/example/audioplayers_ohos/OHOSAudioPlayer.ts",
+    "/Users/zxnap/code/opensource/AI/audioplayers/packages/audioplayers_ohos/ohos/build/default/generated/profile/default/ModuleInfo.ts"
+  ],
+  "otherCompileFiles": [],
+  "dynamicImportLibInfo": {},
+  "routerMap": [],
+  "hspResourcesMap": {},
+  "updateVersionInfo": {},
+  "byteCodeHar": true
+}

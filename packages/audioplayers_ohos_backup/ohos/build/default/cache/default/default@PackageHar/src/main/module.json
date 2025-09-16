@@ -1,0 +1,51 @@
+{
+	"app": {
+		"bundleName": "cn.pan2017.yiqixiaqi",
+		"debug": false,
+		"versionCode": 15,
+		"versionName": "0.1.7",
+		"minAPIVersion": 50001013,
+		"targetAPIVersion": 50101019,
+		"apiReleaseType": "Release",
+		"compileSdkVersion": "5.1.1.212",
+		"compileSdkType": "HarmonyOS",
+		"appEnvironments": [],
+		"bundleType": "app",
+		"buildMode": "release"
+	},
+	"module": {
+		"name": "audioplayers_ohos",
+		"type": "har",
+		"description": "OpenHarmony implementation of audioplayers plugin",
+		"deviceTypes": [
+			"phone",
+			"tablet",
+			"2in1"
+		],
+		"installationFree": false,
+		"abilities": [],
+		"extensionAbilities": [],
+		"requestPermissions": [
+			{
+				"name": "ohos.permission.INTERNET",
+				"reason": "$string:internet_permission_reason",
+				"usedScene": {
+					"abilities": [],
+					"when": "inuse"
+				}
+			},
+			{
+				"name": "ohos.permission.READ_MEDIA",
+				"reason": "$string:read_media_permission_reason",
+				"usedScene": {
+					"abilities": [],
+					"when": "inuse"
+				}
+			}
+		],
+		"packageName": "audioplayers_ohos",
+		"virtualMachine": "ark12.0.6.0",
+		"compileMode": "esmodule",
+		"dependencies": []
+	}
+}

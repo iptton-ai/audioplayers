@@ -1,0 +1,11 @@
+{
+  "name": "audioplayers_ohos",
+  "version": "1.0.0",
+  "description": "OpenHarmony implementation of audioplayers plugin.",
+  "main": "index.ets",
+  "author": "audioplayers team",
+  "license": "MIT",
+  "dependencies": {
+    "@ohos/flutter_ohos": "^1.0.0"
+  }
+}

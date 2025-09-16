@@ -1,0 +1,52 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/zxnap/.ohos/config/default_ohos_XFaWhpK6pTHE0XJ1Va2bKwV-UmLDYbKJHADH7mKI5DU=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B16EFA15C77FD80DFD7AF78EFED3FB3625BE3EEB655F7138EC79D3838D6AFC4D04A1A77DDB8A7C5",
+          "profile": "/Users/zxnap/.ohos/config/default_ohos_XFaWhpK6pTHE0XJ1Va2bKwV-UmLDYbKJHADH7mKI5DU=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/zxnap/.ohos/config/default_ohos_XFaWhpK6pTHE0XJ1Va2bKwV-UmLDYbKJHADH7mKI5DU=.p12",
+          "storePassword": "0000001B20F88C2EDFFFDF2037536024DCA23173257C0793FAB18E22376E641D9CE469EE172792432585B7"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.5(17)",
+        "runtimeOS": "HarmonyOS",
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "profile"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

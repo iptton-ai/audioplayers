@@ -1,0 +1,31 @@
+{
+  "app": {
+    "bundleName": "com.example.audioplayers_example",
+    "vendor": "example",
+    "version": {
+      "code": 1000000,
+      "name": "1.0.0"
+    }
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "name": "default",
+      "compileSdkVersion": 10,
+      "compatibleSdkVersion": 10
+    }
+  ]
+}

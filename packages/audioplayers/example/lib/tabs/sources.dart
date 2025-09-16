@@ -222,6 +222,12 @@ class _SourcesTabState extends State<SourcesTab>
           source: AssetSource(invalidAsset),
           buttonColor: Colors.red,
         ),
+        _createSourceTile(
+          setSourceKey: const Key('setSource-url-remote-wav-ohos'),
+          title: 'Remote URL WAV (OHOS)',
+          subtitle: 'coins.wav',
+          source: UrlSource(wavUrl1),
+        ),
       ],
     );
   }

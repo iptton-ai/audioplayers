@@ -1,0 +1,2 @@
+string internet_permission_reason 0x01000000
+string read_media_permission_reason 0x01000001

@@ -1,0 +1,33 @@
+{
+  "module": {
+    "name": "audioplayers_ohos",
+    "type": "har",
+    "description": "OpenHarmony implementation of audioplayers plugin",
+    "deviceTypes": [
+      "phone",
+      "tablet",
+      "2in1"
+    ],
+    "installationFree": false,
+    "abilities": [],
+    "extensionAbilities": [],
+    "requestPermissions": [
+      {
+        "name": "ohos.permission.INTERNET",
+        "reason": "$string:internet_permission_reason",
+        "usedScene": {
+          "abilities": [],
+          "when": "inuse"
+        }
+      },
+      {
+        "name": "ohos.permission.READ_MEDIA",
+        "reason": "$string:read_media_permission_reason",
+        "usedScene": {
+          "abilities": [],
+          "when": "inuse"
+        }
+      }
+    ]
+  }
+}

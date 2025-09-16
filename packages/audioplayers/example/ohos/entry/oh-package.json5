@@ -1,0 +1,10 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "OpenHarmony entry for audioplayers example.",
+  "dependencies": {
+    "@ohos/flutter_module": "file:../..",
+    "audioplayers_ohos": "file:../../../audioplayers_ohos"
+  }
+}

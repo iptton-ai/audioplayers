@@ -201,7 +201,6 @@ class AudioPlayer {
     PlayerMode? mode,
   }) async {
     desiredState = PlayerState.playing;
-
     if (mode != null) {
       await setPlayerMode(mode);
     }

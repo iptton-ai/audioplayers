@@ -1,0 +1,12 @@
+{
+  "string": [
+    {
+      "name": "internet_permission_reason",
+      "value": "This app needs internet access to play online audio content"
+    },
+    {
+      "name": "read_media_permission_reason", 
+      "value": "This app needs to read media files to play local audio content"
+    }
+  ]
+}

@@ -368,11 +368,7 @@ export class OHOSAudioPlayer {
     }
 
     try {
-      // AVPlayer 支持音量设置
-      this.player.audioRendererInfo = {
-        usage: 2, // STREAM_USAGE_MEDIA
-        rendererFlags: 0
-      };
+      await this.player.setVolume(volume);
       console.info(`Volume set to: ${volume}`);
     } catch (error) {
       let err = error as BusinessError;

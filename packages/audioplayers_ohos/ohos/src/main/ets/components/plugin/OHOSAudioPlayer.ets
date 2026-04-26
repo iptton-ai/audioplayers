@@ -61,21 +61,6 @@ export class OHOSAudioPlayer {
           console.info(`🎵 Sending audio.onPrepared event`);
           this.eventCallback?.('audio.onPrepared', eventData);
           break;
-        case 'playing':
-          const playingData = new AudioEventData();
-          playingData.state = 'playing';
-          this.eventCallback?.('audio.onPlayerStateChanged', playingData);
-          break;
-        case 'paused':
-          const pausedData = new AudioEventData();
-          pausedData.state = 'paused';
-          this.eventCallback?.('audio.onPlayerStateChanged', pausedData);
-          break;
-        case 'stopped':
-          const stoppedData = new AudioEventData();
-          stoppedData.state = 'stopped';
-          this.eventCallback?.('audio.onPlayerStateChanged', stoppedData);
-          break;
         case 'completed':
           this.eventCallback?.('audio.onComplete', eventData);
           break;

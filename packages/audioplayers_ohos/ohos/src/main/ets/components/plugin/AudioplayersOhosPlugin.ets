@@ -308,7 +308,8 @@ export default class AudioplayersOhosPlugin implements FlutterPlugin, MethodCall
         result.success(null);
         break;
       case "setReleaseMode":
-        // OHOS 暂不支持释放模式设置
+        const releaseMode = args['releaseMode'] as string;
+        player.setLoop(releaseMode === 'loop');
         result.success(null);
         break;
       case "setAudioContext":

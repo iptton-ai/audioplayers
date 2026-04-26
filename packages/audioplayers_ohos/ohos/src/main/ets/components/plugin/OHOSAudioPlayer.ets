@@ -24,6 +24,7 @@ export class OHOSAudioPlayer {
   private currentUrl: string = '';
   private isBackgroundTaskRunning: boolean = false;
   private abilityContext: common.UIAbilityContext | null = null;
+  private loopMode: boolean = false;
 
   constructor(eventCallback: AudioEventCallback, context?: common.UIAbilityContext) {
     this.eventCallback = eventCallback;
@@ -62,7 +63,11 @@ export class OHOSAudioPlayer {
           this.eventCallback?.('audio.onPrepared', eventData);
           break;
         case 'completed':
-          this.eventCallback?.('audio.onComplete', eventData);
+          if (this.loopMode && this.player) {
+            this.player.play();
+          } else {
+            this.eventCallback?.('audio.onComplete', eventData);
+          }
           break;
         case 'error':
           this.eventCallback?.('audio.onError', eventData);
@@ -412,6 +417,10 @@ export class OHOSAudioPlayer {
 
   isReady(): boolean {
     return this.isInitialized && this.player !== null;
+  }
+
+  setLoop(loop: boolean): void {
+    this.loopMode = loop;
   }
 
   /**

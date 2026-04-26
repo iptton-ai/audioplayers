@@ -438,7 +438,7 @@ export class OHOSAudioPlayer {
     if (this.isBackgroundTaskRunning) return;
 
     try {
-      const context = (globalThis as Record<string, Object>)['abilityContext'] as common.UIAbilityContext;
+      const context = (globalThis as unknown as Record<string, Object>)['abilityContext'] as common.UIAbilityContext;
       if (!context) {
         console.info('No ability context available for background task');
         return;
@@ -476,7 +476,7 @@ export class OHOSAudioPlayer {
     if (!this.isBackgroundTaskRunning) return;
 
     try {
-      const context = (globalThis as Record<string, Object>)['abilityContext'] as common.UIAbilityContext;
+      const context = (globalThis as unknown as Record<string, Object>)['abilityContext'] as common.UIAbilityContext;
       if (!context) return;
 
       await backgroundTaskManager.stopBackgroundRunning(context);

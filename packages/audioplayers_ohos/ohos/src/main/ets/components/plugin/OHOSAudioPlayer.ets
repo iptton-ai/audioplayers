@@ -23,9 +23,11 @@ export class OHOSAudioPlayer {
   private isInitialized: boolean = false;
   private currentUrl: string = '';
   private isBackgroundTaskRunning: boolean = false;
+  private abilityContext: common.UIAbilityContext | null = null;
 
-  constructor(eventCallback: AudioEventCallback) {
+  constructor(eventCallback: AudioEventCallback, context?: common.UIAbilityContext) {
     this.eventCallback = eventCallback;
+    this.abilityContext = context ?? null;
     this.createPlayer();
   }
 
@@ -438,7 +440,7 @@ export class OHOSAudioPlayer {
     if (this.isBackgroundTaskRunning) return;
 
     try {
-      const context = (globalThis as unknown as Record<string, Object>)['abilityContext'] as common.UIAbilityContext;
+      const context = this.abilityContext;
       if (!context) {
         console.info('No ability context available for background task');
         return;
@@ -476,7 +478,7 @@ export class OHOSAudioPlayer {
     if (!this.isBackgroundTaskRunning) return;
 
     try {
-      const context = (globalThis as unknown as Record<string, Object>)['abilityContext'] as common.UIAbilityContext;
+      const context = this.abilityContext;
       if (!context) return;
 
       await backgroundTaskManager.stopBackgroundRunning(context);

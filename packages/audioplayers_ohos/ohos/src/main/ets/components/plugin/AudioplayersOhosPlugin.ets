@@ -11,6 +11,7 @@ import {
   BinaryMessenger,
 } from '@ohos/flutter_ohos';
 import { OHOSAudioPlayer } from './OHOSAudioPlayer';
+import { common } from '@kit.AbilityKit';
 
 class AudioEventData {
   playerId?: string;
@@ -90,6 +91,9 @@ export default class AudioplayersOhosPlugin implements FlutterPlugin, MethodCall
   private binaryMessenger: BinaryMessenger | null = null;
   private globalMethodHandler: GlobalMethodCallHandler;
 
+  // 由 EntryAbility 设置，供 OHOSAudioPlayer 启动后台长时任务
+  static abilityContext: common.UIAbilityContext | null = null;
+
   constructor() {
     this.globalMethodHandler = new GlobalMethodCallHandler(this);
   }
@@ -163,22 +167,17 @@ export default class AudioplayersOhosPlugin implements FlutterPlugin, MethodCall
       const eventData = new Map<string, Object>();
       eventData.set('event', event);
 
-      // 根据事件类型设置不同的值
       switch (event) {
         case 'audio.onPrepared':
-          // 对于 onPrepared 事件，value 应该是 boolean
           eventData.set('value', true);
           break;
         case 'audio.onComplete':
-          // 对于 onComplete 事件，value 应该是 boolean
           eventData.set('value', true);
           break;
         case 'audio.onDuration':
-          // 对于 onDuration 事件，value 应该是 duration 的毫秒数
           if (value.duration !== undefined) eventData.set('value', value.duration);
           break;
         default:
-          // 对于其他事件，使用原来的逻辑
           if (value.state) eventData.set('value', value.state);
           if (value.code !== undefined) eventData.set('code', value.code);
           if (value.message) eventData.set('message', value.message);
@@ -186,14 +185,13 @@ export default class AudioplayersOhosPlugin implements FlutterPlugin, MethodCall
           break;
       }
 
-      // 发送事件到事件通道
       const eventObj: Record<string, Object> = {};
       eventData.forEach((value, key) => {
         eventObj[key] = value;
       });
       console.info(`🎵 Sending event: ${JSON.stringify(eventObj)}`);
       eventHandler.sendEvent(eventObj);
-    });
+    }, AudioplayersOhosPlugin.abilityContext ?? undefined);
 
     this.players.set(playerId, player);
     console.info(`🎵 OHOS Plugin: Created player ${playerId}`);

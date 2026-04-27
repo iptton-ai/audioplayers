@@ -28,6 +28,8 @@ export class OHOSAudioPlayer {
   private abilityContext: common.UIAbilityContext | null = null;
   private loopMode: boolean = false;
   private currentDuration: number = 0;
+  private metadataTitle: string = '';
+  private metadataSubtitle: string = '';
 
   constructor(eventCallback: AudioEventCallback, context?: common.UIAbilityContext) {
     this.eventCallback = eventCallback;
@@ -100,19 +102,27 @@ export class OHOSAudioPlayer {
     }
   }
 
-  private updateSessionMetadata(durationMs: number) {
+  private updateSessionMetadata(durationMs?: number) {
     if (!this.session) return;
     try {
       this.session.setAVMetadata({
         assetId: 'cchess_bgm',
-        title: '象棋残局大师 - 背景音乐',
-        duration: durationMs,
+        title: this.metadataTitle || '背景音乐',
+        artist: this.metadataSubtitle || undefined,
+        duration: durationMs ?? this.currentDuration,
       });
-      console.info(`🎵 AVSession metadata set, duration: ${durationMs}`);
+      console.info(`🎵 AVSession metadata set, title: ${this.metadataTitle}, duration: ${durationMs}`);
     } catch (error) {
       let err = error as BusinessError;
       console.error(`🎵 Failed to set AVMetadata: ${err.code}, ${err.message}`);
     }
+  }
+
+  setMetadata(title: string, subtitle: string): void {
+    this.metadataTitle = title;
+    this.metadataSubtitle = subtitle;
+    this.updateSessionMetadata();
+    console.info(`🎵 Metadata set: ${title} - ${subtitle}`);
   }
 
   private setupEventListeners() {
@@ -131,7 +141,9 @@ export class OHOSAudioPlayer {
           break;
         case 'completed':
           if (this.loopMode && this.player) {
-            this.player.play();
+            // AVPlayer completed 后不能直接 play()，需 seek(0) 再 play
+            await this.player.seek(0);
+            await this.player.play();
           } else {
             this.eventCallback?.('audio.onComplete', eventData);
           }

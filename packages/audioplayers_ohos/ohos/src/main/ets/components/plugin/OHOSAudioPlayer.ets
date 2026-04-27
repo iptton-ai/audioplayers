@@ -105,7 +105,7 @@ export class OHOSAudioPlayer {
     try {
       this.session.setAVMetadata({
         assetId: 'cchess_bgm',
-        title: '中国象棋残局',
+        title: '象棋残局大师 - 背景音乐',
         duration: durationMs,
       });
       console.info(`🎵 AVSession metadata set, duration: ${durationMs}`);

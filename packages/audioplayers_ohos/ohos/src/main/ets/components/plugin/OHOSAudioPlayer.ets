@@ -153,7 +153,7 @@ export class OHOSAudioPlayer {
 
     // 时间更新监听 - 用于更新 AVSession 播放状态
     this.player.on('timeUpdate', (time: number) => {
-      this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAYING, time);
+      this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAY, time);
     });
 
     // 时长更新监听
@@ -286,7 +286,7 @@ export class OHOSAudioPlayer {
       if (this.player.state === 'prepared' || this.player.state === 'paused' || this.player.state === 'stopped') {
         await this.startBackgroundTask();
         await this.player.play();
-        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAYING);
+        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAY);
         console.info('Playing audio.');
       } else if (this.player.state === 'playing') {
         console.info('Audio is already playing.');
@@ -338,7 +338,7 @@ export class OHOSAudioPlayer {
       if (this.player.state === 'paused' || this.player.state === 'prepared') {
         await this.startBackgroundTask();
         await this.player.play();
-        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAYING);
+        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAY);
         console.info('🎵 Audio resumed/started.');
       } else {
         console.info(`🎵 Cannot resume from state: ${this.player.state}`);

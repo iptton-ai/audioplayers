@@ -320,12 +320,6 @@ export default class AudioplayersOhosPlugin implements FlutterPlugin, MethodCall
         // OHOS 暂不支持字节数组音源
         result.error('501', 'setSourceBytes not implemented on OHOS', null);
         break;
-      case "setMetadata":
-        const metaTitle = call.argument('title') as string ?? '';
-        const metaSubtitle = call.argument('subtitle') as string ?? '';
-        player.setMetadata(metaTitle, metaSubtitle);
-        result.success(null);
-        break;
       default:
         console.warn(`OHOS Plugin: Unhandled method: ${call.method}`);
         result.notImplemented();

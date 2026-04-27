@@ -142,8 +142,9 @@ export class OHOSAudioPlayer {
         case 'completed':
           if (this.loopMode && this.player) {
             // AVPlayer completed 后不能直接 play()，需 seek(0) 再 play
-            await this.player.seek(0);
-            await this.player.play();
+            this.player.seek(0).then((): void => {
+              this.player?.play();
+            });
           } else {
             this.eventCallback?.('audio.onComplete', eventData);
           }

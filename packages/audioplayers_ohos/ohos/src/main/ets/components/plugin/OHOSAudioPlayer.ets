@@ -1,4 +1,5 @@
 import { media } from '@kit.MediaKit';
+import { avSession } from '@kit.AvSessionKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { fileIo } from '@kit.CoreFileKit';
 import backgroundTaskManager from '@ohos.resourceschedule.backgroundTaskManager';
@@ -19,12 +20,14 @@ type AudioEventCallback = (event: string, value: AudioEventData) => void;
 
 export class OHOSAudioPlayer {
   private player: media.AVPlayer | null = null;
+  private session: avSession.AVSession | null = null;
   private eventCallback: AudioEventCallback | null = null;
   private isInitialized: boolean = false;
   private currentUrl: string = '';
   private isBackgroundTaskRunning: boolean = false;
   private abilityContext: common.UIAbilityContext | null = null;
   private loopMode: boolean = false;
+  private currentDuration: number = 0;
 
   constructor(eventCallback: AudioEventCallback, context?: common.UIAbilityContext) {
     this.eventCallback = eventCallback;
@@ -38,6 +41,7 @@ export class OHOSAudioPlayer {
       console.info('AVPlayer created successfully.');
       this.setupEventListeners();
       this.isInitialized = true;
+      await this.createAVSession();
     } catch (error) {
       let err = error as BusinessError;
       console.error(`Failed to create AVPlayer: ${err.code}, ${err.message}`);
@@ -45,6 +49,69 @@ export class OHOSAudioPlayer {
       errorData.code = err.code;
       errorData.message = err.message;
       this.eventCallback?.('onError', errorData);
+    }
+  }
+
+  private async createAVSession() {
+    try {
+      this.session = await avSession.createAVSession(this.abilityContext!, 'CChessBGM', 'audio');
+      this.session.activate();
+
+      // 注册系统播控命令
+      this.session.on('play', () => {
+        console.info('🎵 AVSession: play command from system');
+        this.resume();
+      });
+      this.session.on('pause', () => {
+        console.info('🎵 AVSession: pause command from system');
+        this.pause();
+      });
+      this.session.on('seek', (time: number) => {
+        console.info(`🎵 AVSession: seek command from system, time: ${time}`);
+        this.seek(time);
+      });
+
+      // 初始播放状态
+      this.session.setAVPlaybackState({
+        state: avSession.PlaybackState.PLAYBACK_STATE_PAUSE,
+        position: { elapsedTime: 0, updateTime: Date.now() },
+        speed: 1.0,
+      });
+
+      console.info('🎵 AVSession created and activated.');
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`🎵 Failed to create AVSession: ${err.code}, ${err.message}`);
+    }
+  }
+
+  private updateSessionPlaybackState(state: avSession.PlaybackState, positionMs?: number) {
+    if (!this.session) return;
+    try {
+      const pos = positionMs ?? (this.player?.currentTime ?? 0);
+      this.session.setAVPlaybackState({
+        state: state,
+        position: { elapsedTime: pos, updateTime: Date.now() },
+        speed: 1.0,
+      });
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`🎵 Failed to update AVPlaybackState: ${err.code}, ${err.message}`);
+    }
+  }
+
+  private updateSessionMetadata(durationMs: number) {
+    if (!this.session) return;
+    try {
+      this.session.setAVMetadata({
+        assetId: 'cchess_bgm',
+        title: '中国象棋残局',
+        duration: durationMs,
+      });
+      console.info(`🎵 AVSession metadata set, duration: ${durationMs}`);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`🎵 Failed to set AVMetadata: ${err.code}, ${err.message}`);
     }
   }
 
@@ -84,16 +151,16 @@ export class OHOSAudioPlayer {
       this.eventCallback?.('onError', errorData);
     });
 
-    // 时间更新监听 - 暂时注释掉，因为 audioplayers 不使用这个事件
-    // this.player.on('timeUpdate', (time: number) => {
-    //   const eventData = new AudioEventData();
-    //   eventData.position = time;
-    //   this.eventCallback?.('audio.onPosition', eventData);
-    // });
+    // 时间更新监听 - 用于更新 AVSession 播放状态
+    this.player.on('timeUpdate', (time: number) => {
+      this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAYING, time);
+    });
 
-    // 准备完成监听 - 使用正确的事件名称
+    // 时长更新监听
     this.player.on('durationUpdate', (duration: number) => {
       console.info(`AVPlayer duration updated: ${duration}`);
+      this.currentDuration = duration;
+      this.updateSessionMetadata(duration);
       const eventData = new AudioEventData();
       eventData.duration = duration;
       this.eventCallback?.('audio.onDuration', eventData);
@@ -219,6 +286,7 @@ export class OHOSAudioPlayer {
       if (this.player.state === 'prepared' || this.player.state === 'paused' || this.player.state === 'stopped') {
         await this.startBackgroundTask();
         await this.player.play();
+        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAYING);
         console.info('Playing audio.');
       } else if (this.player.state === 'playing') {
         console.info('Audio is already playing.');
@@ -244,6 +312,7 @@ export class OHOSAudioPlayer {
     try {
       if (this.player.state === 'playing') {
         await this.player.pause();
+        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PAUSE);
         console.info('Audio paused.');
       } else {
         console.info(`Cannot pause from state: ${this.player.state}`);
@@ -269,6 +338,7 @@ export class OHOSAudioPlayer {
       if (this.player.state === 'paused' || this.player.state === 'prepared') {
         await this.startBackgroundTask();
         await this.player.play();
+        this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAYING);
         console.info('🎵 Audio resumed/started.');
       } else {
         console.info(`🎵 Cannot resume from state: ${this.player.state}`);
@@ -324,6 +394,21 @@ export class OHOSAudioPlayer {
       } catch (error) {
         let err = error as BusinessError;
         console.error(`Failed to release player: ${err.code}, ${err.message}`);
+      }
+    }
+    // 销毁 AVSession
+    if (this.session) {
+      try {
+        this.session.off('play');
+        this.session.off('pause');
+        this.session.off('seek');
+        await this.session.deactivate();
+        this.session.destroy();
+        this.session = null;
+        console.info('🎵 AVSession destroyed.');
+      } catch (error) {
+        let err = error as BusinessError;
+        console.error(`🎵 Failed to destroy AVSession: ${err.code}, ${err.message}`);
       }
     }
   }

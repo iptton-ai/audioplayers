@@ -141,10 +141,8 @@ export class OHOSAudioPlayer {
           break;
         case 'completed':
           if (this.loopMode && this.player) {
-            // AVPlayer completed 后不能直接 play()，需 seek(0) 再 play
-            this.player.seek(0).then((): void => {
-              this.player?.play();
-            });
+            // seek(0) 完成后通过 seekDone 事件触发 play
+            this.player.seek(0);
           } else {
             this.eventCallback?.('audio.onComplete', eventData);
           }
@@ -167,6 +165,13 @@ export class OHOSAudioPlayer {
     // 时间更新监听 - 用于更新 AVSession 播放状态
     this.player.on('timeUpdate', (time: number) => {
       this.updateSessionPlaybackState(avSession.PlaybackState.PLAYBACK_STATE_PLAY, time);
+    });
+
+    // seek 完成监听 - 循环播放时 seek(0) 后自动 play
+    this.player.on('seekDone', (seekTime: number): void => {
+      if (this.loopMode && seekTime === 0 && this.player) {
+        this.player.play();
+      }
     });
 
     // 时长更新监听
